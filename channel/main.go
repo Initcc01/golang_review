@@ -23,6 +23,12 @@ func worker3(id int, wg *sync.WaitGroup, stopChan chan struct{}) {
 }
 
 // 使用sync.WaitGroup控制协程退出
+/*
+1、stopCh 通道用于通知协程退出。当关闭 stopCh 时，所有监听这个通道的协程都会接收到信号，
+并优雅地停止执行。本质上成了和1.使用通道（Channel）一样.
+2、sync.WaitGroup的真正作用是卡在wg.Wait()处，直到wg.Done()被执行(wg.Add()增加的值被减为0),
+才会继续往下执行. 比如往往用于防止goroutine还没执行完,主协程就退出了
+*/
 func main() {
 	var wg sync.WaitGroup
 	stopChan := make(chan struct{}) //空结构体channel
